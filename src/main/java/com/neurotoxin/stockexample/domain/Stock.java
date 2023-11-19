@@ -1,5 +1,7 @@
 package com.neurotoxin.stockexample.domain;
 
+import com.neurotoxin.stockexample.dto.StockResponse;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +23,7 @@ public class Stock {
     @Version
     private Long version;
 
+    @Builder
     public Stock(Long productId, Long quantity) {
         this.productId = productId;
         this.quantity = quantity;
@@ -31,5 +34,13 @@ public class Stock {
             throw new RuntimeException("재고는 0개 미만일 수 없습니다!");
         }
         this.quantity -= quantity;
+    }
+
+    public StockResponse toResponse() {
+        return StockResponse.builder()
+                .id(this.id)
+                .productId(this.productId)
+                .quantity(this.quantity)
+                .build();
     }
 }

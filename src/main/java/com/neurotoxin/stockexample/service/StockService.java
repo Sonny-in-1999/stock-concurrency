@@ -1,6 +1,8 @@
 package com.neurotoxin.stockexample.service;
 
 import com.neurotoxin.stockexample.domain.Stock;
+import com.neurotoxin.stockexample.dto.StockRequest;
+import com.neurotoxin.stockexample.dto.StockResponse;
 import com.neurotoxin.stockexample.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class StockService {
 
     private final StockRepository stockRepository;
+
+
+    @Transactional
+    public StockResponse create(StockRequest request) {
+        Stock stock = request.toEntity();
+        Stock newStock = stockRepository.save(stock);
+        return newStock.toResponse();
+    }
 
     /**
      * !! @Transactinal 어노테이션의 구조적 특성으로 인해 동시성 문제가 발생 !!
